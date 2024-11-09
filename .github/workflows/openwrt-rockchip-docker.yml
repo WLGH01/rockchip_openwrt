@@ -6,7 +6,7 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: openwrt-rockchip-docker
+name: openwrt-rockchip2
 
 on:
   repository_dispatch:
@@ -27,7 +27,7 @@ env:
 
 jobs:
   Build:
-    runs-on: self-hosted
+    runs-on: [self-hosted, ubuntu]
     outputs:
       OPENWRTROOT: ${{ steps.update.outputs.OPENWRTROOT }}
       PLATFORM: ${{ steps.compile.outputs.PLATFORM }}
