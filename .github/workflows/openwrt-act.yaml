@@ -44,13 +44,13 @@ jobs:
         [ -f /etc/issue.net ] && cat /etc/issue.net
         [ -f /etc/issue ] && cat /etc/issue
         ulimit -a
-        
+
     - name: Clone Source Code
       run: |
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         cd openwrt
-        
+
     - name: Update Feeds
       id: update
       run: |
@@ -67,7 +67,7 @@ jobs:
       run: |
         cd $OPENWRTROOT
         ./scripts/feeds install -a
-        
+
     - name: Load Custom Configuration
       run: |
         [ -e files ] && mv files $OPENWRTROOT/files
@@ -91,7 +91,7 @@ jobs:
         CONFIG_PACKAGE_luci-lib-docker=y
         ' >> .config
         make defconfig
-        
+
     - name: Download Package
       id: package
       run: |
@@ -101,7 +101,7 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-  
+
     - name: Compile Packages
       id: compile
       run: |
@@ -128,7 +128,7 @@ jobs:
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "FIRMWARE=$PWD" >> $GITHUB_OUTPUT
         echo "COMPILE_STATUS=success" >> $GITHUB_OUTPUT
-        
+
     - name: Generate Firmware
       if: steps.compile.outputs.COMPILE_STATUS == 'success'
       id: generate
@@ -164,11 +164,11 @@ jobs:
         mv openwrt-rockchip-armv8-embedfire_lubancat-2-squashfs-sysupgrade.img.gz $(date +"%Y.%m.%d")-docker-openwrt-embedfire_lubancat-2-squashfs-sysupgrade.img.gz
         mv openwrt-rockchip-armv8-friendlyarm_nanopi-r2c-squashfs-sysupgrade.img.gz $(date +"%Y.%m.%d")-docker-openwrt-friendlyarm_nanopi-r2c-squashfs-sysupgrade.img.gz
         mv openwrt-rockchip-armv8-friendlyarm_nanopi-r2s-squashfs-sysupgrade.img.gz $(date +"%Y.%m.%d")-docker-openwrt-friendlyarm_nanopi-r2s-squashfs-sysupgrade.img.gz
-        mv openwrt-rockchip-armv8-squashfs-sysupgrade.img.gz $(date +"%Y.%m.%d")-docker-openwrt-squashfs-sysupgrade.img.gz
+        mv openwrt-rockchip-armv8-squashfs-sysupgrade.img.gz $(date +"%Y.%m.%d")-docker-openwrt-rockchip-armv8-squashfs-sysupgrade.img.gz
         popd
 
-    - name: Upload Build Logs
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-logs
-        path: logs/build.log
+    - name: Upload Release
+      if: steps.generate.outputs.GENERATE_STATUS == 'success'
+      run: |
+        cd $OPENWRTROOT
+        curl -T "$(date +"%Y-%m-%d")-docker-openwrt-rockchip-armv8-squashfs-sysupgrade.img.gz" -u "user:password" ftp://ftp.example.com/path/
