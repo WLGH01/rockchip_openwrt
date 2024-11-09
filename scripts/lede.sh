@@ -73,4 +73,4 @@ rm -rf package/feeds/packages/adguardhome
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
 # Modify default IP
-sed -i 's/192.168.1.1/192.168.11.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.3.1/g' package/base-files/files/bin/config_generate
