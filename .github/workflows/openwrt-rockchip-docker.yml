@@ -27,7 +27,7 @@ env:
 
 jobs:
   Build:
-    runs-on: [self-hosted, ubuntu]
+    runs-on: [self-hosted, debian]
     outputs:
       OPENWRTROOT: ${{ steps.update.outputs.OPENWRTROOT }}
       PLATFORM: ${{ steps.compile.outputs.PLATFORM }}
@@ -114,9 +114,9 @@ jobs:
       run: |
         cd $OPENWRTROOT
         echo -e "$(nproc) thread compile"
-        make tools/compile -j8 || make tools/compile -j8
-        make toolchain/compile -j8 || make toolchain/compile -j8
-        make target/compile -j8 || make target/compile -j8 IGNORE_ERRORS=1
+        make tools/compile -j4 || make tools/compile -j4
+        make toolchain/compile -j4 || make toolchain/compile -j4
+        make target/compile -j4 || make target/compile -j4 IGNORE_ERRORS=1
         make diffconfig
         make package/compile -j8 IGNORE_ERRORS=1 || make package/compile -j8 IGNORE_ERRORS=1
         make package/index
