@@ -29,7 +29,7 @@ env:
 
 jobs:
   Build:
-    runs-on: ubuntu-least
+    runs-on: ubuntu-latest
     outputs:
       OPENWRTROOT: ${{ steps.update.outputs.OPENWRTROOT }}
       PLATFORM: ${{ steps.compile.outputs.PLATFORM }}
