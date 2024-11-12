@@ -7,7 +7,7 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: openwrt-rockchip-docker
+name: openwrt-rockchip-docker2
 
 on:
   repository_dispatch:
