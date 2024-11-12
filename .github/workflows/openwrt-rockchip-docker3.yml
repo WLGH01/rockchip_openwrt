@@ -41,6 +41,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+       
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        pip3 install pyelftools  # 安装 pyelftools 模块
 
     - name: Initialization Environment
       env:
